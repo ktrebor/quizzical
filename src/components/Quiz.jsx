@@ -1,22 +1,20 @@
 import React from "react"
-import { nanoid } from 'nanoid'
 
 function Quiz (props) {
-    const styles = {
-        backgroundColor: props.isSelected ? "#D6DBF5" : "white"
-    }
-
     const allAnswers = props.answers.map(item => {
-        
+        const styles = {
+            backgroundColor: item.isSelected ? "#D6DBF5" : "white"
+        }
 
         return (
             <button 
-                key={nanoid()}
+                key={item.id}
+                id={item.id}
                 style={styles}
-                onClick={event => props.selectAnswer(event)}
-                value={item}
+                onClick={() => props.holdAnswer(props.questionId)}
+                value={item.options}
             >
-                {item}
+                {item.options}
             </button>
         )
     })
