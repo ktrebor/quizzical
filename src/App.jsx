@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 function App() {
   const [quiz, setQuiz] = React.useState(false)
   const [quizData, setQuizData] = React.useState([])
-
+  
   React.useEffect(() => {
     async function getQuizData() {
       const res = await fetch("https://opentdb.com/api.php?amount=5&type=multiple")
@@ -26,7 +26,8 @@ function App() {
     }
     getQuizData()
   }, [])
-
+  
+  console.log(quizData)
   function shuffleTransformAnswers(answers) {
     answers.sort((a, b) => 0.5 - Math.random())   
     const newAnswerArray = []
@@ -41,7 +42,7 @@ function App() {
   }
 
   const quizElements = quizData.map(item => {
-
+    
     return ( 
       <Quiz 
         key={item.id}
@@ -51,20 +52,17 @@ function App() {
     )
   })
 
-  
-
   function holdAnswer(answerId) {
-  
-    quizData.map(item => {
-      item.answers.map(element => {
-        if (answerId === element.answerId) {
-          console.log("this far")
+    quizData.map(obj => {
+      obj.answers.map(element => {
+        if (element.answerId === answerId) {
+          console.log(answerId)
+          //return {...element, isSelected: !element.isSelected}
         } else {
-          console.log("noo")
-        }  
+          //return element
+        }
       })
     })
-
   }
 
   function startQuiz() {
