@@ -12,57 +12,60 @@ function App() {
     async function getQuizData() {
       const res = await fetch("https://opentdb.com/api.php?amount=5&type=multiple")
       const data = await res.json()
-
-      let myQuizData = []
-      data.results.forEach(item => {
-        myQuizData.push({
-          id: nanoid(),
-          question: item.question,
-          answers: shuffleTransformAnswers([...item.incorrect_answers, item.correct_answer]),
-          correctAnswer: item.correct_answer
-        })
-      })
-      setQuizData(myQuizData)
+      setQuizData(formatData(data.results))
     }
     getQuizData()
   }, [])
   
-  console.log(quizData)
-  function shuffleTransformAnswers(answers) {
-    answers.sort((a, b) => 0.5 - Math.random())   
-    const newAnswerArray = []
-    answers.forEach(item => {
-      newAnswerArray.push({
-        answerId: nanoid(),
-        options: item,
-        isSelected: false
-      })
+  function formatData(questions) {
+    let formatedData = questions.map(item => {
+      return {
+        id: nanoid(),
+        question: item.question,
+        correctAnswer: item.correct_answer,
+        answers: shuffleAnswers([...item.incorrect_answers, item.correct_answer])
+      }
     })
-    return newAnswerArray
+    return formatedData
   }
 
-  const quizElements = quizData.map(item => {
-    
-    return ( 
-      <Quiz 
-        key={item.id}
-        {...item}
-        handleClick={holdAnswer}
-      />
-    )
-  })
+  function shuffleAnswers(answers) {
+    let randomAnswers = [...answers].sort((a, b) => Math.random() - 0.5)
+    let randomAnswerList = randomAnswers.map(item => {
+      return {
+        id: nanoid(5),
+        isSelected: false,
+        option: item
+      }
+    })
+    return randomAnswerList
+  }
 
-  function holdAnswer(answerId) {
-    quizData.map(obj => {
-      obj.answers.map(element => {
-        if (element.answerId === answerId) {
-          console.log(answerId)
-          //return {...element, isSelected: !element.isSelected}
+  function holdAnswer(answerId, questionId) {
+    setQuizData(prevQuizData => prevQuizData.map(item => {
+        if (item.id === questionId) {
+          let newAnswersArray = item.answers.map(element => {
+            if (element.id === answerId) {
+              return {
+                ...element,
+                isSelected: true,
+              }
+            } else {
+              return {
+                ...element,
+                isSelected: false,
+              }
+            }
+          })
+          return {
+            ...item,
+            answers: newAnswersArray,
+          }
         } else {
-          //return element
+          return item
         }
       })
-    })
+    )
   }
 
   function startQuiz() {
@@ -75,7 +78,10 @@ function App() {
           quiz 
         ? 
         <div className='quiz-container'>
-            {quizElements}
+            <Quiz 
+              quizData={quizData}
+              handleClick={holdAnswer}
+            />
         </div> 
         :
           <Start 
