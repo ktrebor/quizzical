@@ -7,6 +7,8 @@ import { nanoid } from 'nanoid'
 function App() {
   const [quiz, setQuiz] = React.useState(false)
   const [quizData, setQuizData] = React.useState([])
+  const [allChecked, setAllChecked] = React.useState(false)
+  const [score, setScore] = React.useState(0)
   
   React.useEffect(() => {
     async function getQuizData() {
@@ -46,30 +48,61 @@ function App() {
         if (item.id === questionId) {
           let newAnswersArray = item.answers.map(element => {
             if (element.id === answerId) {
-              return {
-                ...element,
-                isSelected: true,
-              }
+              return {...element, isSelected: true}
             } else {
-              return {
-                ...element,
-                isSelected: false,
-              }
+              return {...element, isSelected: false}
             }
           })
-          return {
-            ...item,
-            answers: newAnswersArray,
-          }
+          return {...item, answers: newAnswersArray}
         } else {
           return item
         }
+      }) 
+    )
+  }
+
+  function checkAnswers() {
+    setScore(0)
+    setQuizData(prevQuizData => prevQuizData.map(item => {
+        let checkedAnswers = item.answers.map(element => {
+          if (element.isSelected && item.correctAnswer === element.option) {
+            setScore(prevScore => prevScore + 1)
+            return {
+              ...element,
+              isUserCorrect: true
+            }
+          } else if (element.isSelected && item.correctAnswer !== element.option) {
+            return {
+              ...element,
+              isUserWrong: true
+            }
+          } else if (!element.isSelected && item.correctAnswer === element.option) {
+            return {
+              ...element,
+              isUserCorrect: true
+            }
+          } else {
+            return {
+              ...element,
+              isFaded: true
+            }
+          }
+        })
+        return {
+          ...item,
+          answers: checkedAnswers
+        }
       })
     )
+    setAllChecked(true)
   }
 
   function startQuiz() {
     setQuiz(prevQuiz => !prevQuiz)
+  }
+
+  function playAnotherGame() {
+    //am ramas aici
   }
 
   return (
@@ -82,6 +115,21 @@ function App() {
               quizData={quizData}
               handleClick={holdAnswer}
             />
+            { 
+            !allChecked ?
+            <div className='quiz-results'>
+              <button 
+                className="check-button" 
+                onClick={checkAnswers}>Check answers
+              </button>
+            </div> 
+            :
+            <div>
+              <p className="start-description">You scored {score}/5 correct answers</p>
+              <button onClick={playAnotherGame}>Play Again</button>
+            </div>
+            }
+
         </div> 
         :
           <Start 

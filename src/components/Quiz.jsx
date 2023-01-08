@@ -1,6 +1,6 @@
 import React from "react"
 
-function Quiz (props) {    
+function Quiz (props) {  
     let allAnswers = props.quizData.map(item => {
 
         return (
@@ -9,8 +9,26 @@ function Quiz (props) {
                 <div className="question-answers">
                     {item.answers.map(element => {
 
-                        const styles = {
-                            backgroundColor: element.isSelected ? "#D6DBF5" : "white"
+                        let styles = {}
+                        if (element.isUserWrong) {
+                            styles = {
+                                backgroundColor: "#F8BCBC",
+                                border: "none",
+                                opacity: 0.5,
+                            }
+                        } else if (element.isUserCorrect){
+                            styles = {
+                                backgroundColor: "#94D7A2",
+                                border: "none",
+                            }
+                        } else if (element.isFaded) {
+                            styles = {
+                                opacity: 0.5
+                            }
+                        } else {
+                            styles = {
+                                backgroundColor: element.isSelected ? "#D6DBF5" : "#f5f7fb"
+                            }
                         }
 
                         return (

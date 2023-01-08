@@ -41,7 +41,7 @@ main {
   font-size: 16px;
 }
 
-.start-button {
+.start-button, .check-button {
   background-color: var(--main-btn-color);
   border: none;
   padding: 10px 50px;
@@ -85,4 +85,8 @@ main {
   font-size: 14px;
 }
 
-
+.quiz-results {
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+}
