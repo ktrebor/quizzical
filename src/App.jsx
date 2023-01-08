@@ -17,7 +17,7 @@ function App() {
       setQuizData(formatData(data.results))
     }
     getQuizData()
-  }, [])
+  }, [quiz])
   
   function formatData(questions) {
     let formatedData = questions.map(item => {
@@ -102,7 +102,9 @@ function App() {
   }
 
   function playAnotherGame() {
-    //am ramas aici
+    setQuiz(false)
+    setScore(0)
+    setAllChecked(false)
   }
 
   return (
@@ -117,16 +119,19 @@ function App() {
             />
             { 
             !allChecked ?
-            <div className='quiz-results'>
+            <div className='quiz-check'>
               <button 
                 className="check-button" 
                 onClick={checkAnswers}>Check answers
               </button>
             </div> 
             :
-            <div>
-              <p className="start-description">You scored {score}/5 correct answers</p>
-              <button onClick={playAnotherGame}>Play Again</button>
+            <div className='quiz-results'>
+              <h3 className="gameover-description">You scored {score}/5 correct answers</h3>
+              <button 
+                onClick={playAnotherGame}
+                className='play-again'
+                >Play Again</button>
             </div>
             }
 

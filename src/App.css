@@ -41,10 +41,10 @@ main {
   font-size: 16px;
 }
 
-.start-button, .check-button {
+.start-button, .check-button, .play-again {
   background-color: var(--main-btn-color);
   border: none;
-  padding: 10px 50px;
+  padding: 15px 40px;
   border-radius: 10px;
   color: white;
   cursor: pointer;
@@ -76,8 +76,8 @@ main {
 
 .question-answers > button {
   background-color: white;
-  border: 2px solid var(--main-btn-color);
-  padding: 10px 50px;
+  border: 1px solid var(--main-btn-color);
+  padding: 5px 40px;
   border-radius: 18px;
   color: var(--main-text-color);
   cursor: pointer;
@@ -85,8 +85,15 @@ main {
   font-size: 14px;
 }
 
-.quiz-results {
+.quiz-results, .quiz-check {
   display: flex;
   justify-content: center;
-  margin-top: 3em;
+  align-items: center;
+  gap: 15px;
+  margin-top: 1em;
+}
+
+.gameover-description {
+  color: var(--main-text-color);
+  font-weight: bold;
 }
