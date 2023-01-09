@@ -1,11 +1,12 @@
 import React from "react"
+import { decode } from "html-entities"
 
 function Quiz (props) {  
     let allAnswers = props.quizData.map(item => {
 
         return (
             <div className="question-container">
-                <h3 key={item.id} id={item.id} className="question-title">{item.question}</h3>
+                <h3 key={item.id} id={item.id} className="question-title">{decode(item.question)}</h3>
                 <div className="question-answers">
                     {item.answers.map(element => {
 
@@ -38,8 +39,9 @@ function Quiz (props) {
                                 style={styles}
                                 onClick={() => props.handleClick(element.id, item.id)}
                             >
-                                {element.option}
+                                {decode(element.option)}
                             </button>
+                            
                         )
                     })}
                 </div>

@@ -3,6 +3,7 @@ import Quiz from './components/Quiz'
 import './App.css'
 import React from "react"
 import { nanoid } from 'nanoid'
+import { decode } from "html-entities"
 
 function App() {
   const [quiz, setQuiz] = React.useState(false)
@@ -28,6 +29,7 @@ function App() {
         answers: shuffleAnswers([...item.incorrect_answers, item.correct_answer])
       }
     })
+
     return formatedData
   }
 
