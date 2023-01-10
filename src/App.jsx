@@ -3,7 +3,6 @@ import Quiz from './components/Quiz'
 import './App.css'
 import React from "react"
 import { nanoid } from 'nanoid'
-import { decode } from "html-entities"
 
 function App() {
   const [quiz, setQuiz] = React.useState(false)
